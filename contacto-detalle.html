@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Hogary's — Información del contacto</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="home">
+
+<header id="site-header"></header>
+
+<main class="contact-detail-page">
+
+  <div class="contact-detail">
+
+    <div class="contact-detail-image">
+      <img id="contactFoto" src="" alt="Foto del contacto">
+    </div>
+
+    <div class="contact-detail-info">
+
+      <p class="contact-detail-label">ASESOR INMOBILIARIO</p>
+
+      <h1 id="contactNombre"></h1>
+
+      <p id="contactPuesto" class="contact-detail-role"></p>
+
+      <p id="contactDescripcion"></p>
+
+      <div class="contact-detail-data">
+
+        <div>
+          <strong>📍 Lugar de trabajo</strong>
+          <span id="contactLugar"></span>
+        </div>
+
+        <div>
+          <strong>🕐 Horario de atención</strong>
+          <span id="contactHorario"></span>
+        </div>
+
+        <div>
+          <strong>📞 Teléfono</strong>
+          <span id="contactTelefono"></span>
+        </div>
+
+        <div>
+          <strong>✉️ Correo</strong>
+          <span id="contactCorreo"></span>
+        </div>
+
+      </div>
+
+      <div class="contact-detail-buttons">
+
+        <a id="contactWhatsapp" href="#" target="_blank" class="detail-whatsapp">
+          WhatsApp
+        </a>
+
+        <a id="contactEmail" href="#" class="detail-email">
+          Enviar correo
+        </a>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <section class="appointment-section">
+
+    <div class="section-head">
+      <h2>Agenda una cita</h2>
+      <p>Selecciona una fecha y horario para solicitar una cita con el asesor.</p>
+    </div>
+
+    <form id="appointmentForm" class="appointment-form">
+
+      <div>
+        <label for="nombreCita">Nombre</label>
+        <input type="text" id="nombreCita" required>
+      </div>
+
+      <div>
+        <label for="correoCita">Correo</label>
+        <input type="email" id="correoCita" required>
+      </div>
+
+      <div>
+        <label for="fechaCita">Fecha</label>
+        <input type="date" id="fechaCita" required>
+      </div>
+
+      <div>
+        <label for="horaCita">Hora</label>
+        <select id="horaCita" required>
+          <option value="">Selecciona una hora</option>
+          <option>09:00 AM</option>
+          <option>10:00 AM</option>
+          <option>11:00 AM</option>
+          <option>12:00 PM</option>
+          <option>01:00 PM</option>
+          <option>02:00 PM</option>
+          <option>03:00 PM</option>
+          <option>04:00 PM</option>
+          <option>05:00 PM</option>
+        </select>
+      </div>
+
+      <div class="appointment-full">
+        <label for="mensajeCita">Mensaje</label>
+        <textarea id="mensajeCita" placeholder="Escribe algún comentario sobre tu cita..."></textarea>
+      </div>
+
+      <button type="submit" class="appointment-button">
+        Solicitar cita
+      </button>
+
+      <p id="appointmentMessage"></p>
+
+    </form>
+
+  </section>
+
+
+  <section class="reviews-section">
+
+    <div class="section-head">
+      <h2>Reseñas y opiniones</h2>
+      <p>Conoce las experiencias de otras personas.</p>
+    </div>
+
+    <div class="reviews-summary">
+
+      <div class="rating-number">
+        <strong id="ratingNumber">0.0</strong>
+        <div class="stars">★★★★★</div>
+        <span id="reviewCount">0 reseñas</span>
+      </div>
+
+    </div>
+
+    <div id="reviewsList" class="reviews-list"></div>
+
+    <div class="review-form">
+
+      <h3>Deja tu reseña</h3>
+
+      <form id="reviewForm">
+
+        <input
+          type="text"
+          id="reviewName"
+          placeholder="Tu nombre"
+          required
+        >
+
+        <select id="reviewRating" required>
+          <option value="">Calificación</option>
+          <option value="5">★★★★★ - 5</option>
+          <option value="4">★★★★ - 4</option>
+          <option value="3">★★★ - 3</option>
+          <option value="2">★★ - 2</option>
+          <option value="1">★ - 1</option>
+        </select>
+
+        <textarea
+          id="reviewText"
+          placeholder="Escribe tu comentario..."
+          required
+        ></textarea>
+
+        <button type="submit">
+          Publicar reseña
+        </button>
+
+      </form>
+
+    </div>
+
+  </section>
+
+</main>
+
+<footer id="site-footer"></footer>
+
+<div id="site-modals"></div>
+
+<script src="common.js"></script>
+
+<script>
+
+const contactos = {
+
+  contacto1: {
+    nombre: "Contacto",
+    puesto: "Asesor inmobiliario",
+    foto: "video_imagenes/foto.jpg",
+    lugar: "Oficinas Hogary's — Culiacán, Sinaloa",
+    horario: "Lunes a viernes de 9:00 AM a 5:00 PM",
+    telefono: "667 123 4567",
+    correo: "contactoo@hogarys.com",
+    whatsapp: "526671234567",
+    descripcion: "Este contacto forma parte del equipo de Hogary's y puede ayudarte a encontrar el inmueble que estás buscando."
+  },
+
+  contacto2: {
+    nombre: "Contacto",
+    puesto: "Asesor inmobiliario",
+    foto: "video_imagenes/foto.jpg",
+    lugar: "Oficinas Hogary's — Culiacán, Sinaloa",
+    horario: "Lunes a viernes de 9:00 AM a 5:00 PM",
+    telefono: "667 123 4567",
+    correo: "contactoo@hogarys.com",
+    whatsapp: "526671234567",
+    descripcion: "Este contacto forma parte del equipo de Hogary's y puede ayudarte con información sobre propiedades en venta y renta."
+  },
+
+  contacto3: {
+    nombre: "Contacto",
+    puesto: "Asesor inmobiliario",
+    foto: "video_imagenes/foto.jpg",
+    lugar: "Oficinas Hogary's — Culiacán, Sinaloa",
+    horario: "Lunes a viernes de 9:00 AM a 5:00 PM",
+    telefono: "667 123 4567",
+    correo: "contactoo@hogarys.com",
+    whatsapp: "526671234567",
+    descripcion: "Este contacto forma parte del equipo de Hogary's y puede ayudarte a conocer las diferentes opciones disponibles."
+  }
+
+};
+
+
+const parametros = new URLSearchParams(window.location.search);
+
+const idContacto = parametros.get("id") || "contacto1";
+
+const contacto = contactos[idContacto];
+
+
+document.getElementById("contactFoto").src = contacto.foto;
+
+document.getElementById("contactFoto").alt = "Foto del contacto";
+
+document.getElementById("contactNombre").textContent = contacto.nombre;
+
+document.getElementById("contactPuesto").textContent = contacto.puesto;
+
+document.getElementById("contactDescripcion").textContent = contacto.descripcion;
+
+document.getElementById("contactLugar").textContent = contacto.lugar;
+
+document.getElementById("contactHorario").textContent = contacto.horario;
+
+document.getElementById("contactTelefono").textContent = contacto.telefono;
+
+document.getElementById("contactCorreo").textContent = contacto.correo;
+
+
+document.getElementById("contactWhatsapp").href =
+  "https://wa.me/" + contacto.whatsapp;
+
+document.getElementById("contactEmail").href =
+  "mailto:" + contacto.correo;
+
+
+
+/* ---------- Citas ---------- */
+
+document.getElementById("appointmentForm").addEventListener("submit", function(event){
+
+  event.preventDefault();
+
+  document.getElementById("appointmentMessage").textContent =
+    "Tu solicitud de cita fue registrada correctamente.";
+
+  this.reset();
+
+});
+
+
+
+/* ---------- Reseñas ---------- */
+
+function obtenerResenas(){
+
+  const clave = "resenas_" + idContacto;
+
+  const resenas = localStorage.getItem(clave);
+
+  if(resenas){
+    return JSON.parse(resenas);
+  }
+
+  return [
+    {
+      nombre: "Usuario",
+      calificacion: 5,
+      comentario: "Muy buena atención y servicio."
+    },
+    {
+      nombre: "Cliente",
+      calificacion: 5,
+      comentario: "Me ayudaron a resolver mis dudas."
+    }
+  ];
+
+}
+
+
+function mostrarResenas(){
+
+  const resenas = obtenerResenas();
+
+  const lista = document.getElementById("reviewsList");
+
+  lista.innerHTML = "";
+
+  resenas.forEach(function(resena){
+
+    const estrellas =
+      "★".repeat(resena.calificacion) +
+      "☆".repeat(5 - resena.calificacion);
+
+    lista.innerHTML += `
+      <div class="review-card">
+
+        <div class="review-top">
+
+          <strong>${resena.nombre}</strong>
+
+          <span>${estrellas}</span>
+
+        </div>
+
+        <p>${resena.comentario}</p>
+
+      </div>
+    `;
+
+  });
+
+
+  const cantidad = resenas.length;
+
+  let promedio = 0;
+
+  if(cantidad > 0){
+
+    let suma = 0;
+
+    resenas.forEach(function(resena){
+      suma += Number(resena.calificacion);
+    });
+
+    promedio = suma / cantidad;
+
+  }
+
+  document.getElementById("ratingNumber").textContent =
+    promedio.toFixed(1);
+
+  document.getElementById("reviewCount").textContent =
+    cantidad + (cantidad === 1 ? " reseña" : " reseñas");
+
+}
+
+
+document.getElementById("reviewForm").addEventListener("submit", function(event){
+
+  event.preventDefault();
+
+  const nombre = document.getElementById("reviewName").value;
+
+  const calificacion =
+    Number(document.getElementById("reviewRating").value);
+
+  const comentario =
+    document.getElementById("reviewText").value;
+
+  const resenas = obtenerResenas();
+
+  resenas.push({
+    nombre: nombre,
+    calificacion: calificacion,
+    comentario: comentario
+  });
+
+  localStorage.setItem(
+    "resenas_" + idContacto,
+    JSON.stringify(resenas)
+  );
+
+  this.reset();
+
+  mostrarResenas();
+
+});
+
+
+mostrarResenas();
+
+</script>
+
+</body>
+</html>

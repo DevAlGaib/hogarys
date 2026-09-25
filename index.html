@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hogary's — Compra y renta de inmuebles</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="home">
+
+<header id="site-header"></header>
+
+<section id="seccionVisitante" class="hero-video-wrap">
+  <video src="video_principal.mp4" muted loop autoplay playsinline poster="https://picsum.photos/seed/hogarys-hero/1600/900"></video>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Compra y renta de inmuebles</p>
+    <h1>Encuentra el lugar<br>donde <em>echar raíces</em></h1>
+    <p>Compra o renta tu siguiente hogar con facilidad y confianza. <br> O publica y vende tu propiedad sin intermediarios <b> ni comisiones</b>.</p>
+    <div class="hero-ctas">
+      <button class="btn btn-solid" data-open="register">Crear cuenta gratis</button>
+      <a href="listado.html" class="btn btn-ghost">Ver propiedades</a>
+    </div>
+    <div class="hero-stats">
+      <div><span class="stat-num">1,240+</span><span class="stat-label">propiedades activas</span></div>
+      <div><span class="stat-num">36</span><span class="stat-label">ciudades</span></div>
+      <div><span class="stat-num">4.8</span><span class="stat-label">calificación promedio</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="seccionSesionIniciada" class="hero-carousel-wrap" style="display: none;">
+  <div class="carousel-track" id="heroCarouselTrack"></div>
+  <button class="carousel-btn prev" id="cPrev">&#10094;</button>
+  <button class="carousel-btn next" id="cNext">&#10095;</button>
+</section>
+
+<div class="search-block">
+  <div class="search-bar">
+    <div class="search-field">
+      <label for="op">Operación</label>
+      <select id="op"><option>Comprar</option><option>Rentar</option></select>
+    </div>
+    <div class="search-field">
+      <label for="ciudad">Ciudad o zona</label>
+      <input id="ciudad" type="text" placeholder="Ej. Culiacán, Sinaloa">
+    </div>
+    <div class="search-field">
+      <label for="tipo">Tipo de inmueble</label>
+      <select id="tipo"><option>Casa</option><option>Departamento</option><option>Terreno</option></select>
+    </div>
+    <div class="search-submit"><button type="button" id="searchGo">Buscar</button></div>
+  </div>
+</div>
+
+<section class="section" id="como-funciona">
+  <div class="section-head">
+    <h2>Tres pasos, sin vueltas</h2>
+    <p>Del registro a las llaves en tu mano, sin intermediarios confusos.</p>
+  </div>
+  <div class="plan-grid">
+    <div class="plan-item"><span class="num">01</span><h3>Crea tu cuenta</h3><p>Regístrate como comprador, arrendatario o propietario en menos de un minuto.</p></div>
+    <div class="plan-item"><span class="num">02</span><h3>Explora propiedades</h3><p>Filtra por ciudad, precio y tipo de inmueble hasta encontrar el indicado.</p></div>
+    <div class="plan-item"><span class="num">03</span><h3>Contacta y cierra</h3><p>Habla directo con el propietario o agente y agenda tu visita.</p></div>
+  </div>
+</section>
+
+<section class="section" id="comprar">
+  <div class="section-head">
+    <h2>Propiedades destacadas</h2>
+    <p>Una muestra de lo que encontrarás al explorar el catálogo completo.</p>
+  </div>
+  <div class="listings-grid" id="featuredGrid"></div>
+</section>
+
+<section class="cta-band" id="seccionBand">
+  <h2>Regístrate hoy y guarda tus propiedades favoritas</h2>
+  <button class="btn btn-solid" data-open="register">Crear cuenta gratis</button>
+</section>
+
+<footer id="site-footer"></footer>
+<div id="site-modals"></div>
+
+<script src="properties.js"></script>
+<script src="common.js"></script>
+<script>
+  document.getElementById('searchGo').addEventListener('click', () => {
+    const op = document.getElementById('op').value === 'Rentar' ? 'rentar' : 'comprar';
+    const ciudad = encodeURIComponent(document.getElementById('ciudad').value || '');
+    const tipo = encodeURIComponent(document.getElementById('tipo').value || '');
+    window.location.href = `listado.html?op=${op}&ciudad=${ciudad}&tipo=${tipo}`;
+  });
+
+  function formatPrice(precio, op){
+    const num = precio.toLocaleString('es-MX');
+    return op === 'rentar' ? `$${num} MXN / mes` : `$${num} MXN`;
+  }
+
+  document.getElementById('featuredGrid').innerHTML = PROPERTIES.slice(0, 3).map(p =>`
+    <div class="listing-card" onclick="window.location.href='detalles.html?id=${p.id}'">
+      <div class="listing-img">
+        <span class="listing-tag">${p.op === 'rentar' ? 'En renta' : 'En venta'}</span>
+        ${p.fotos && p.fotos.length
+          ? `<img src="${p.fotos[0]}" alt="${p.tipo} en ${p.colonia},${p.ciudad}" loading="lazy">`
+          : `<div style="width:100%;height:100%;display:grid;place-items:center;color:var(--ink-soft);background:var(--paper);">Foto no disponible</div>`}
+      </div>
+      <div class="listing-body">
+        <div class="listing-price">${formatPrice(p.precio, p.op)}</div>
+        <div class="listing-loc">${p.colonia}, ${p.ciudad}</div>
+        <div class="listing-specs"><span>${p.recamaras} recámaras</span><span>${p.banos} baños</span><span>${p.m2} m²</span></div>
+      </div>
+    </div>
+  `).join('');
+</script>
+
+</body>
+</html>

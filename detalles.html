@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hogary's — Detalle de propiedad</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header id="site-header"></header>
+
+<div class="breadcrumb">
+  <a href="index.html">Inicio</a> / <a href="listado.html">Propiedades</a> / <span id="crumbCurrent">Detalle</span>
+</div>
+
+<div class="detail-layout" id="detailRoot"></div>
+
+<footer id="site-footer"></footer>
+<div id="site-modals"></div>
+
+<script src="properties.js"></script>
+<script src="common.js"></script>
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const idParam = params.get('id');
+  const id = /^\d+$/.test(idParam || '') ? parseInt(idParam, 10) : idParam;
+  const todasPropiedades = getTodasPropiedades();
+  const p = todasPropiedades.find(x => String(x.id) === String(id)) || todasPropiedades[0];
+
+  // Red de seguridad: si por alguna razón no hay ninguna propiedad que
+  // mostrar (por ejemplo, si properties.js no cargó), avisamos en vez
+  // de dejar la página en blanco sin explicación.
+  if(!p){
+    document.getElementById('detailRoot').innerHTML = `
+      <div style="grid-column:1/-1;text-align:center;padding:80px 20px;color:var(--ink-soft);">
+        <h2 style="font-family:'Fraunces',serif;color:var(--ink);margin-bottom:12px;">No encontramos esta propiedad</h2>
+        <p>Puede que el enlace esté roto o que el archivo <code>properties.js</code> no se haya cargado. Revisa la consola del navegador (F12) para más detalle.</p>
+      </div>
+    `;
+    throw new Error('Propiedad no encontrada: revisa que properties.js exista y que el id en la URL sea correcto.');
+  }
+
+  document.getElementById('crumbCurrent').textContent = `${p.colonia}, ${p.ciudad}`;
+  document.title = `Hogary's — ${p.colonia}, ${p.ciudad}`;
+
+  const galeria = (p.fotos && p.fotos.length)
+    ? p.fotos
+    : [1,2,3,4].map(n => `https://picsum.photos/seed/raiz-detalle${p.id}-${n}/900/700`);
+  const initials = p.agente.split(' ').map(w => w[0]).slice(0, 2).join('');
+  // Las propiedades publicadas por usuarios no traen "amenidades" ni
+  // "desc" obligatorio; sin este resguardo el script se rompía aquí
+  // y por eso ni el clic ni el movimiento automático de la galería
+  // llegaban a funcionar.
+  const amenidades = p.amenidades && p.amenidades.length ? p.amenidades : [];
+  const descripcion = p.desc || 'Sin descripción todavía.';
+
+  document.getElementById('detailRoot').innerHTML = `
+    <div>
+      <div class="detail-gallery" id="detailGallery">
+        ${galeria.map((src, i) => `<img src="${src}" class="gallery-slide${i === 0 ? ' active' : ''}" alt="Foto ${i + 1} de ${p.colonia}, ${p.ciudad}" loading="lazy" onerror="this.onerror=null;this.src='https://picsum.photos/seed/raiz-detalle${p.id}-${i}/900/700';">`).join('')}
+      </div>
+      <div class="detail-thumbs" id="detailThumbs">
+        ${galeria.map((src, i) => `<div data-index="${i}" class="${i === 0 ? 'active-thumb' : ''}"><img src="${src}" alt="Miniatura ${i + 1}" loading="lazy" onerror="this.onerror=null;this.src='https://picsum.photos/seed/raiz-detalle${p.id}-${i}/900/700';"></div>`).join('')}
+      </div>
+
+      <div class="detail-header">
+        <div>
+          <h1>${p.colonia}</h1>
+          <p class="listing-loc">${p.tipo} en ${p.op === 'rentar' ? 'renta' : 'venta'} · ${p.ciudad}</p>
+        </div>
+        <button class="save-btn" id="saveBtn">♡ Guardar</button>
+      </div>
+
+      <div class="detail-specs-row">
+        <div><span class="spec-num">${p.recamaras}</span><span class="spec-label">Recámaras</span></div>
+        <div><span class="spec-num">${p.banos}</span><span class="spec-label">Baños</span></div>
+        <div><span class="spec-num">${p.m2}</span><span class="spec-label">m² construcción</span></div>
+      </div>
+
+      <div class="detail-desc">
+        <h3>Descripción</h3>
+        <p>${descripcion}</p>
+        ${amenidades.length ? `
+          <h3>Amenidades</h3>
+          <div class="amenities">${amenidades.map(a => `<div>· ${a}</div>`).join('')}</div>
+        ` : ''}
+      </div>
+    </div>
+
+    <aside class="detail-sidebar">
+      <div class="listing-price">${formatPrice(p.precio, p.op)}</div>
+      <div class="price-note">${p.op === 'rentar' ? 'Mantenimiento no incluido' : 'Precio de contado'}</div>
+
+      <label for="msgAgente" style="font-size:0.85rem;color:var(--ink-soft);display:block;margin-bottom:8px;">Escribe un mensaje</label>
+      <textarea id="msgAgente" placeholder="Hola, me interesa esta propiedad y quisiera agendar una visita."></textarea>
+      <button class="btn btn-solid" style="width:100%;" id="contactBtn">Contactar</button>
+
+      <div class="agent-row">
+        <div class="agent-avatar">${initials}</div>
+        <div class="agent-info">
+          <div class="agent-name">${p.agente}</div>
+          <div class="agent-role">Agente inmobiliario</div>
+        </div>
+      </div>
+    </aside>
+  `;
+
+  // El botón de guardar ahora es un "like" real: requiere sesión y se
+  // guarda por usuario (localStorage), y se refleja en Mis favoritos
+  // dentro de perfil.html.
+  const saveBtn = document.getElementById('saveBtn');
+
+  function pintarSaveBtn(){
+    const sesionActual = getSesion();
+    const guardado = sesionActual && esFavorito(sesionActual.email, p.id);
+    saveBtn.classList.toggle('saved', !!guardado);
+    saveBtn.textContent = guardado ? '♥ Guardado' : '♡ Guardar';
+  }
+  pintarSaveBtn();
+
+  saveBtn.addEventListener('click', () => {
+    const sesionActual = getSesion();
+    if(!sesionActual){
+      document.getElementById('loginModal').classList.add('active');
+      return;
+    }
+    toggleFavorito(sesionActual.email, p.id);
+    pintarSaveBtn();
+  });
+
+  document.getElementById('contactBtn').addEventListener('click', () => {
+    alert('Mensaje enviado al agente (demostración) — aquí se conectaría con el backend.');
+  });
+
+  // Carrusel de la galería: la foto grande rota sola cada 4s y también
+  // se puede cambiar picándole a una miniatura (reinicia el ciclo).
+  const gallerySlides = document.querySelectorAll('#detailGallery .gallery-slide');
+  const galleryThumbs = document.querySelectorAll('#detailThumbs > div');
+  let galleryIdx = 0;
+  let galleryTimer;
+
+  function showGallerySlide(i){
+    galleryIdx = i;
+    gallerySlides.forEach((img, idx) => img.classList.toggle('active', idx === i));
+    galleryThumbs.forEach((t, idx) => t.classList.toggle('active-thumb', idx === i));
+  }
+
+  function startGalleryAutoplay(){
+    clearInterval(galleryTimer);
+    galleryTimer = setInterval(() => showGallerySlide((galleryIdx + 1) % gallerySlides.length), 4000);
+  }
+
+  if(gallerySlides.length){
+    galleryThumbs.forEach(t => t.addEventListener('click', () => {
+      showGallerySlide(parseInt(t.dataset.index, 10));
+      startGalleryAutoplay();
+    }));
+    startGalleryAutoplay();
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Hogary's — Contactos</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="home">
+
+<header id="site-header"></header>
+
+<main>
+
+  <section class="section contactos-page">
+
+    <div class="section-head">
+      <h1>Conoce a nuestro equipo</h1>
+      <p>Contáctanos directamente para resolver tus dudas y ayudarte a encontrar el inmueble ideal.</p>
+    </div>
+
+    <div class="contacts-grid">
+    <!-- contacto 1-->
+    <div class="contact-card" onclick="window.location.href='contacto-detalle.html?id=contacto1'">
+      <div class="contact-img">
+        <!-- aqui pones la foto de la persona-->
+        <img src="video_imagenes/foto.jpg" alt="Foto de personaa">
+      </div>
+      <!-- aqui pones el nombre de la persona, y su rol en la empresa
+       y su numero telefonico y correo-->
+      <div class="contact-info">
+        <h3>Contacto</h3>
+        <p class="contact-role">Asesor inmobiliario</p>
+
+        <a href="https://wa.me/526671234567" class="contact-button whatsapp" target="_blank" onclick="event.stopPropagation();">
+        <img src="video_imagenes/whatsapp.jpg" alt="WhatsApp">
+        667 123 4567
+        </a>
+
+        <a href="mailto:ana@hogarys.com" class="contact-button gmail" onclick="event.stopPropagation();">
+        <img src="video_imagenes/gmail.jpg" alt="Gmail">
+        contactoo@hogarys.com
+        </a>
+        <button class="contact-more" onclick="event.stopPropagation(); window.location.href='contacto-detalle.html?id=contacto1'">
+          Ver información
+        </button>
+      </div>
+    </div>
+
+
+    <!-- se crean los demas contactos (son los mismos valores)-->
+    <!-- Contacto 2-->
+    <div class="contact-card" onclick="window.location.href='contacto-detalle.html?id=contacto2'">
+      <div class="contact-img">
+        <!-- aqui pones la foto de la persona-->
+        <img src="video_imagenes/foto.jpg" alt="Foto de personaa">
+      </div>
+      <!-- aqui pones el nombre de la persona, y su rol en la empresa
+       y su numero telefonico y correo-->
+      <div class="contact-info">
+        <h3>Contacto2</h3>
+        <p class="contact-role">Asesor inmobiliario</p>
+
+        <a href="https://wa.me/526671234567" class="contact-button whatsapp" target="_blank" onclick="event.stopPropagation();">
+        <img src="video_imagenes/whatsapp.jpg" alt="WhatsApp">
+        667 123 4567
+        </a>
+
+        <a href="mailto:ana@hogarys.com" class="contact-button gmail" onclick="event.stopPropagation();">
+        <img src="video_imagenes/gmail.jpg" alt="Gmail">
+        contactoo@hogarys.com
+        </a>
+        <button class="contact-more" onclick="event.stopPropagation(); window.location.href='contacto-detalle.html?id=contacto2'">
+          Ver información
+        </button>
+      </div>
+    </div>
+
+    <!-- Contacto 3-->
+    <div class="contact-card" onclick="window.location.href='contacto-detalle.html?id=contacto3'">
+      <div class="contact-img">
+        <!-- aqui pones la foto de la persona-->
+        <img src="video_imagenes/foto.jpg" alt="Foto de personaa">
+      </div>
+      <!-- aqui pones el nombre de la persona, y su rol en la empresa
+       y su numero telefonico y correo-->
+      <div class="contact-info">
+        <h3>Contacto3</h3>
+        <p class="contact-role">Asesor inmobiliario</p>
+
+        <a href="https://wa.me/526671234567" class="contact-button whatsapp" target="_blank" onclick="event.stopPropagation();">
+        <img src="video_imagenes/whatsapp.jpg" alt="WhatsApp">
+        667 123 4567
+        </a>
+
+        <a href="mailto:ana@hogarys.com" class="contact-button gmail" onclick="event.stopPropagation();">
+        <img src="video_imagenes/gmail.jpg" alt="Gmail">
+        contactoo@hogarys.com
+        </a>
+        <button class="contact-more" onclick="event.stopPropagation(); window.location.href='contacto-detalle.html?id=contacto3'">
+          Ver información
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+    </div>
+
+  </section>
+
+</main>
+
+<footer id="site-footer"></footer>
+
+<div id="site-modals"></div>
+
+<script src="common.js"></script>
+
+</body>
+</html>

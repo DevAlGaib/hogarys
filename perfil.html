@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hogary's — Mi cuenta</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header id="site-header"></header>
+
+<div class="account-header">
+  <h1 id="saludoCuenta">Mi cuenta</h1>
+  <p>Gestiona tu perfil, tus propiedades publicadas y tus favoritos.</p>
+</div>
+
+<div class="account-layout">
+  <aside class="account-tabs">
+    <button class="account-tab active" data-tab="perfil">Perfil</button>
+    <button class="account-tab" data-tab="propiedades">Mis propiedades</button>
+    <button class="account-tab" data-tab="favoritos">Favoritos</button>
+  </aside>
+
+  <div class="account-panels">
+
+    <!-- ===== Perfil ===== -->
+    <section class="account-panel active" id="panel-perfil">
+      <h2>Editar perfil</h2>
+      <form id="perfilForm" class="account-form">
+        <div class="field-light">
+          <label for="pfNombre">Nombre completo</label>
+          <input id="pfNombre" type="text" placeholder="Tu nombre">
+        </div>
+        <div class="field-light">
+          <label for="pfEmail">Correo electrónico</label>
+          <input id="pfEmail" type="email" disabled>
+        </div>
+        <div class="field-light">
+          <label for="pfTelefono">Teléfono</label>
+          <input id="pfTelefono" type="tel" placeholder="Ej. 667 123 4567">
+        </div>
+        <div class="field-light">
+          <label for="pfBio">Sobre mí</label>
+          <textarea id="pfBio" placeholder="Cuéntanos algo sobre ti (opcional)"></textarea>
+        </div>
+        <div class="account-msg" id="perfilMsg"></div>
+        <button type="submit" class="btn btn-solid">Guardar cambios</button>
+      </form>
+    </section>
+
+    <!-- ===== Mis propiedades ===== -->
+    <section class="account-panel" id="panel-propiedades">
+      <div class="account-panel-head">
+        <h2>Mis propiedades</h2>
+        <button class="btn btn-solid" id="btnNuevaProp">+ Publicar propiedad</button>
+      </div>
+
+      <form id="propForm" class="account-form" style="display:none;">
+        <div class="field-row">
+          <div class="field-light">
+            <label for="propOp">Operación</label>
+            <select id="propOp">
+              <option value="comprar">Vender</option>
+              <option value="rentar">Rentar</option>
+            </select>
+          </div>
+          <div class="field-light">
+            <label for="propTipo">Tipo de inmueble</label>
+            <select id="propTipo">
+              <option>Casa</option>
+              <option>Departamento</option>
+              <option>Terreno</option>
+            </select>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field-light">
+            <label for="propCiudad">Ciudad</label>
+            <input id="propCiudad" type="text" placeholder="Ej. Culiacán">
+          </div>
+          <div class="field-light">
+            <label for="propColonia">Colonia / Zona</label>
+            <input id="propColonia" type="text" placeholder="Ej. Col. Centro">
+          </div>
+        </div>
+        <div class="field-light">
+          <label for="propPrecio">Precio (MXN)</label>
+          <input id="propPrecio" type="number" min="0" placeholder="Ej. 1850000">
+        </div>
+        <div class="field-row">
+          <div class="field-light">
+            <label for="propRecamaras">Recámaras</label>
+            <input id="propRecamaras" type="number" min="0" placeholder="0">
+          </div>
+          <div class="field-light">
+            <label for="propBanos">Baños</label>
+            <input id="propBanos" type="number" min="0" placeholder="0">
+          </div>
+        </div>
+        <div class="field-light">
+          <label for="propM2">Metros cuadrados de construcción</label>
+          <input id="propM2" type="number" min="0" placeholder="Ej. 120">
+        </div>
+        <div class="field-light">
+          <label for="propDesc">Descripción</label>
+          <textarea id="propDesc" placeholder="Describe la propiedad..."></textarea>
+        </div>
+        <div class="field-light">
+          <label for="propFoto1">Fotos (enlaces de imagen — opcional, se usará una de ejemplo si lo dejas vacío)</label>
+          <p style="font-size:0.8rem;color:var(--ink-soft);margin:-2px 0 10px;">Importante: pega el enlace directo a la imagen (termina en .jpg, .png, etc., o es el link de "Abrir imagen en una pestaña nueva"), no el link de una página que solo la muestra.</p>
+          <input id="propFoto1" type="url" placeholder="https://... (foto principal)" style="margin-bottom:6px;">
+          <img id="previewFoto1" style="display:none;width:100%;max-height:160px;object-fit:cover;border:1px solid var(--line);margin-bottom:10px;">
+          <input id="propFoto2" type="url" placeholder="https://... (foto 2)" style="margin-bottom:6px;">
+          <img id="previewFoto2" style="display:none;width:100%;max-height:160px;object-fit:cover;border:1px solid var(--line);margin-bottom:10px;">
+          <input id="propFoto3" type="url" placeholder="https://... (foto 3)" style="margin-bottom:6px;">
+          <img id="previewFoto3" style="display:none;width:100%;max-height:160px;object-fit:cover;border:1px solid var(--line);">
+        </div>
+        <div class="account-msg" id="propMsg"></div>
+        <div style="display:flex;gap:12px;">
+          <button type="submit" class="btn btn-solid" id="propSubmitBtn">Publicar propiedad</button>
+          <button type="button" class="btn btn-ghost" id="propCancelBtn">Cancelar</button>
+        </div>
+      </form>
+
+      <div class="account-empty" id="propEmpty">Aún no has publicado ninguna propiedad.</div>
+      <div class="results-grid" id="misPropiedadesGrid"></div>
+    </section>
+
+    <!-- ===== Favoritos ===== -->
+    <section class="account-panel" id="panel-favoritos">
+      <h2>Mis favoritos</h2>
+      <div class="account-empty" id="favEmpty">Aún no tienes propiedades guardadas. Dales like ♡ desde el detalle de una propiedad.</div>
+      <div class="results-grid" id="favoritosGrid"></div>
+    </section>
+
+  </div>
+</div>
+
+<footer id="site-footer"></footer>
+<div id="site-modals"></div>
+
+<script src="properties.js"></script>
+<script src="common.js"></script>
+<script>
+  // Si no hay sesión, mandamos a index.html a iniciar sesión.
+  let sesion = getSesion();
+  if(!sesion){
+    window.location.href = 'index.html?login=1';
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    sesion = getSesion();
+    if(!sesion) return;
+
+    document.getElementById('saludoCuenta').textContent = `Hola, ${sesion.nombre}`;
+
+    /* ===== Tabs ===== */
+    const tabs = document.querySelectorAll('.account-tab');
+    const panels = document.querySelectorAll('.account-panel');
+    tabs.forEach(tab => tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      panels.forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById('panel-' + tab.dataset.tab).classList.add('active');
+    }));
+
+    /* ===== Perfil ===== */
+    function cargarFormPerfil(){
+      const usuarios = getUsuarios();
+      const usuario = usuarios.find(u => u.email === sesion.email) || sesion;
+      document.getElementById('pfNombre').value = usuario.nombre || '';
+      document.getElementById('pfEmail').value = usuario.email || '';
+      document.getElementById('pfTelefono').value = usuario.telefono || '';
+      document.getElementById('pfBio').value = usuario.bio || '';
+    }
+    cargarFormPerfil();
+
+    document.getElementById('perfilForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const nombre = document.getElementById('pfNombre').value.trim();
+      const telefono = document.getElementById('pfTelefono').value.trim();
+      const bio = document.getElementById('pfBio').value.trim();
+      const msg = document.getElementById('perfilMsg');
+
+      if(!nombre){
+        msg.textContent = 'El nombre no puede quedar vacío.';
+        msg.className = 'account-msg error';
+        return;
+      }
+
+      actualizarPerfil(sesion.email, { nombre, telefono, bio });
+      sesion = getSesion();
+      document.getElementById('saludoCuenta').textContent = `Hola, ${sesion.nombre}`;
+      msg.textContent = 'Cambios guardados.';
+      msg.className = 'account-msg ok';
+    });
+
+    /* ===== Vista previa de fotos: para detectar de una vez si el
+       enlace pegado sí es una imagen directa, antes de publicar. ===== */
+    function setupFotoPreview(inputId, imgId){
+      const input = document.getElementById(inputId);
+      const img = document.getElementById(imgId);
+      input.addEventListener('input', () => {
+        const url = input.value.trim();
+        if(!url){ img.style.display = 'none'; input.style.borderColor = ''; return; }
+        img.onload = () => { img.style.display = 'block'; input.style.borderColor = 'var(--forest)'; };
+        img.onerror = () => { img.style.display = 'none'; input.style.borderColor = 'var(--terracotta)'; };
+        img.src = url;
+      });
+    }
+    setupFotoPreview('propFoto1', 'previewFoto1');
+    setupFotoPreview('propFoto2', 'previewFoto2');
+    setupFotoPreview('propFoto3', 'previewFoto3');
+
+    /* ===== Mis propiedades ===== */
+    const propForm = document.getElementById('propForm');
+    const propEmpty = document.getElementById('propEmpty');
+    const misPropiedadesGrid = document.getElementById('misPropiedadesGrid');
+
+    function limpiarPropForm(){
+      propForm.dataset.editId = '';
+      document.getElementById('propOp').value = 'comprar';
+      document.getElementById('propTipo').value = 'Casa';
+      document.getElementById('propCiudad').value = '';
+      document.getElementById('propColonia').value = '';
+      document.getElementById('propPrecio').value = '';
+      document.getElementById('propRecamaras').value = '';
+      document.getElementById('propBanos').value = '';
+      document.getElementById('propM2').value = '';
+      document.getElementById('propDesc').value = '';
+      ['propFoto1','propFoto2','propFoto3'].forEach((id, i) => {
+        document.getElementById(id).value = '';
+        document.getElementById(id).style.borderColor = '';
+        document.getElementById('previewFoto' + (i + 1)).style.display = 'none';
+      });
+      document.getElementById('propMsg').textContent = '';
+      document.getElementById('propSubmitBtn').textContent = 'Publicar propiedad';
+    }
+
+    document.getElementById('btnNuevaProp').addEventListener('click', () => {
+      limpiarPropForm();
+      propForm.style.display = propForm.style.display === 'none' ? 'block' : 'none';
+    });
+
+    document.getElementById('propCancelBtn').addEventListener('click', () => {
+      propForm.style.display = 'none';
+      limpiarPropForm();
+    });
+
+    function renderMisPropiedades(){
+      const mias = getPropiedadesUsuarios().filter(p => p.propietarioEmail === sesion.email);
+      propEmpty.style.display = mias.length ? 'none' : 'block';
+      misPropiedadesGrid.innerHTML = mias.map(p => `
+        <div class="listing-card">
+          <div class="listing-img">
+            <span class="listing-tag">${p.op === 'rentar' ? 'En renta' : 'En venta'}</span>
+            <img src="${(p.fotos && p.fotos[0]) || ('https://picsum.photos/seed/' + p.id + '/500/375')}" alt="${p.tipo} en ${p.colonia}, ${p.ciudad}" loading="lazy" onerror="this.onerror=null;this.src='https://picsum.photos/seed/${p.id}/500/375';">
+          </div>
+          <div class="listing-body">
+            <div class="listing-price">${formatPrice(p.precio, p.op)}</div>
+            <div class="listing-loc">${p.colonia}, ${p.ciudad}</div>
+            <div class="listing-specs"><span>${p.recamaras} recámaras</span><span>${p.banos} baños</span><span>${p.m2} m²</span></div>
+          </div>
+          <div class="manage-actions">
+            <a href="detalle.html?id=${p.id}">Ver</a>
+            <button data-edit="${p.id}">Editar</button>
+            <button data-del="${p.id}" class="danger">Eliminar</button>
+          </div>
+        </div>
+      `).join('');
+
+      misPropiedadesGrid.querySelectorAll('[data-edit]').forEach(b => b.addEventListener('click', () => {
+        const id = b.dataset.edit;
+        const p = getPropiedadesUsuarios().find(x => x.id === id);
+        if(!p) return;
+        propForm.dataset.editId = id;
+        document.getElementById('propOp').value = p.op;
+        document.getElementById('propTipo').value = p.tipo;
+        document.getElementById('propCiudad').value = p.ciudad;
+        document.getElementById('propColonia').value = p.colonia;
+        document.getElementById('propPrecio').value = p.precio;
+        document.getElementById('propRecamaras').value = p.recamaras;
+        document.getElementById('propBanos').value = p.banos;
+        document.getElementById('propM2').value = p.m2;
+        document.getElementById('propDesc').value = p.desc;
+        ['propFoto1','propFoto2','propFoto3'].forEach((id, i) => {
+          const input = document.getElementById(id);
+          input.value = (p.fotos && p.fotos[i]) || '';
+          input.dispatchEvent(new Event('input'));
+        });
+        document.getElementById('propSubmitBtn').textContent = 'Guardar cambios';
+        propForm.style.display = 'block';
+        propForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }));
+
+      misPropiedadesGrid.querySelectorAll('[data-del]').forEach(b => b.addEventListener('click', () => {
+        if(confirm('¿Eliminar esta propiedad? Esta acción no se puede deshacer.')){
+          eliminarPropiedadUsuario(b.dataset.del);
+          renderMisPropiedades();
+        }
+      }));
+    }
+
+    propForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const msg = document.getElementById('propMsg');
+      const ciudad = document.getElementById('propCiudad').value.trim();
+      const colonia = document.getElementById('propColonia').value.trim();
+      const precio = parseFloat(document.getElementById('propPrecio').value);
+
+      if(!ciudad || !colonia || !precio){
+        msg.textContent = 'Completa al menos ciudad, colonia y precio.';
+        msg.className = 'account-msg error';
+        return;
+      }
+
+      const fotos = [
+        document.getElementById('propFoto1').value.trim(),
+        document.getElementById('propFoto2').value.trim(),
+        document.getElementById('propFoto3').value.trim()
+      ].filter(Boolean);
+
+      const datos = {
+        propietarioEmail: sesion.email,
+        agente: sesion.nombre,
+        op: document.getElementById('propOp').value,
+        tipo: document.getElementById('propTipo').value,
+        ciudad,
+        colonia,
+        precio,
+        recamaras: parseInt(document.getElementById('propRecamaras').value, 10) || 0,
+        banos: parseInt(document.getElementById('propBanos').value, 10) || 0,
+        m2: parseInt(document.getElementById('propM2').value, 10) || 0,
+        desc: document.getElementById('propDesc').value.trim(),
+        fotos,
+        accent: '#2D5A3D'
+      };
+
+      const editId = propForm.dataset.editId;
+      if(editId){
+        actualizarPropiedadUsuario(editId, datos);
+        msg.textContent = 'Propiedad actualizada.';
+      } else {
+        agregarPropiedadUsuario(datos);
+        msg.textContent = 'Propiedad publicada.';
+      }
+      msg.className = 'account-msg ok';
+      renderMisPropiedades();
+      setTimeout(() => { propForm.style.display = 'none'; limpiarPropForm(); }, 700);
+    });
+
+    renderMisPropiedades();
+
+    /* ===== Favoritos ===== */
+    const favEmpty = document.getElementById('favEmpty');
+    const favoritosGrid = document.getElementById('favoritosGrid');
+
+    function renderFavoritos(){
+      const idsFav = getFavoritos(sesion.email);
+      const todas = getTodasPropiedades();
+      const favs = todas.filter(p => idsFav.includes(p.id));
+
+      favEmpty.style.display = favs.length ? 'none' : 'block';
+      favoritosGrid.innerHTML = favs.map(p => `
+        <div class="listing-card" style="cursor:pointer;" onclick="window.location.href='detalle.html?id=${p.id}'">
+          <div class="listing-img">
+            <span class="listing-tag">${p.op === 'rentar' ? 'En renta' : 'En venta'}</span>
+            <img src="${(p.fotos && p.fotos[0]) || ('https://picsum.photos/seed/raiz-prop' + p.id + '/500/375')}" alt="${p.tipo} en ${p.colonia}, ${p.ciudad}" loading="lazy" onerror="this.onerror=null;this.src='https://picsum.photos/seed/raiz-prop${p.id}/500/375';">
+          </div>
+          <div class="listing-body">
+            <div class="listing-price">${formatPrice(p.precio, p.op)}</div>
+            <div class="listing-loc">${p.colonia}, ${p.ciudad}</div>
+            <div class="listing-specs"><span>${p.recamaras} recámaras</span><span>${p.banos} baños</span><span>${p.m2} m²</span></div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    renderFavoritos();
+  });
+</script>
+
+</body>
+</html>

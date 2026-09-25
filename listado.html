@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hogary's — Catálogo de propiedades</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header id="site-header"></header>
+
+<div class="catalog-header">
+  <h1>Explora propiedades</h1>
+  <p id="resultCount">Cargando resultados…</p>
+</div>
+
+<div class="catalog-layout">
+  <aside class="filters">
+    <h3>Filtros</h3>
+    <div class="filter-group">
+      <label>Operación</label>
+      <div class="filter-chip-group" id="opChips">
+        <button class="filter-chip active" data-op="todos">Todos</button>
+        <button class="filter-chip" data-op="comprar">Comprar</button>
+        <button class="filter-chip" data-op="rentar">Rentar</button>
+      </div>
+    </div>
+    <div class="filter-group">
+      <label for="fCiudad">Ciudad o zona</label>
+      <input type="text" id="fCiudad" placeholder="Ej. Culiacán">
+    </div>
+    <div class="filter-group">
+      <label for="fTipo">Tipo de inmueble</label>
+      <select id="fTipo">
+        <option value="todos">Todos</option>
+        <option value="Casa">Casa</option>
+        <option value="Departamento">Departamento</option>
+        <option value="Terreno">Terreno</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>Recámaras mínimas</label>
+      <div class="filter-chip-group" id="recChips">
+        <button class="filter-chip active" data-rec="0">Todas</button>
+        <button class="filter-chip" data-rec="2">2+</button>
+        <button class="filter-chip" data-rec="3">3+</button>
+        <button class="filter-chip" data-rec="4">4+</button>
+      </div>
+    </div>
+    <div class="filter-group">
+      <label>Precio máximo</label>
+      <div class="filter-range"><input type="number" id="fPrecio" placeholder="Sin límite"></div>
+    </div>
+    <button class="btn btn-ghost" id="clearFilters" style="width:100%;">Limpiar filtros</button>
+  </aside>
+
+  <div>
+    <div class="results-bar">
+      <span id="resultSub">—</span>
+      <select id="orden">
+        <option value="relevancia">Relevancia</option>
+        <option value="precio-asc">Precio: menor a mayor</option>
+        <option value="precio-desc">Precio: mayor a menor</option>
+      </select>
+    </div>
+    <div class="results-grid" id="resultsGrid"></div>
+  </div>
+</div>
+
+<footer id="site-footer"></footer>
+<div id="site-modals"></div>
+
+<script src="properties.js"></script>
+<script src="common.js"></script>
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const state = {
+    op: ['comprar','rentar'].includes(params.get('op')) ? params.get('op') : 'todos',
+    ciudad: params.get('ciudad') || '',
+    tipo: params.get('tipo') && params.get('tipo') !== 'Terreno' ? params.get('tipo') : 'todos',
+    recMin: 0,
+    precioMax: null,
+    orden: 'relevancia'
+  };
+
+  const grid = document.getElementById('resultsGrid');
+  const resultCount = document.getElementById('resultCount');
+  const resultSub = document.getElementById('resultSub');
+
+  document.getElementById('fCiudad').value = state.ciudad;
+  document.getElementById('fTipo').value = state.tipo;
+
+  // Catálogo completo: las de demostración (properties.js) + las que
+  // hayan publicado los usuarios desde perfil.html.
+  const TODAS = getTodasPropiedades();
+
+  function render(){
+    let list = TODAS.filter(p =>
+      (state.op === 'todos' || p.op === state.op) &&
+      (state.tipo === 'todos' || p.tipo === state.tipo) &&
+      (!state.ciudad || (p.ciudad || '').toLowerCase().includes(state.ciudad.toLowerCase())) &&
+      (!state.recMin || p.recamaras >= state.recMin) &&
+      (!state.precioMax || p.precio <= state.precioMax)
+    );
+
+    if(state.orden === 'precio-asc') list.sort((a,b) => a.precio - b.precio);
+    if(state.orden === 'precio-desc') list.sort((a,b) => b.precio - a.precio);
+
+    resultCount.textContent = `${list.length} propiedad${list.length === 1 ? '' : 'es'} encontrada${list.length === 1 ? '' : 's'}`;
+    resultSub.textContent = state.ciudad ? `Resultados en "${state.ciudad}"` : 'Todas las ciudades';
+
+    if(list.length === 0){
+      grid.innerHTML = `<div class="empty-state"><h3>No encontramos propiedades con esos filtros</h3><p>Intenta ampliar el rango de precio o quitar algún filtro.</p></div>`;
+      return;
+    }
+  grid.innerHTML = list.map(p => `
+  <div class="listing-card" onclick="window.location.href='detalles.html?id=${p.id}'">
+    
+    <div class="listing-img">
+      <span class="listing-tag">
+        ${p.op === 'rentar' ? 'En renta' : 'En venta'}
+      </span>
+      <img 
+        src="${p.fotos && p.fotos.length > 0 ? p.fotos[0] : 'imagenes/sin-foto.jpg'}"
+        alt="${p.tipo} en ${p.colonia}, ${p.ciudad}"
+        loading="lazy"
+      >
+    </div>
+    <div class="listing-body">
+      <div class="listing-price">
+        ${formatPrice(p.precio, p.op)}
+      </div>
+      <div class="listing-loc">
+        ${p.colonia}, ${p.ciudad}
+      </div>
+      <div class="listing-specs">
+        <span>${p.recamaras} recámaras</span>
+        <span>${p.banos} baños</span>
+        <span>${p.m2} m²</span>
+      </div>
+    </div>
+  </div>
+`).join('');
+  }
+
+  // Una sola función reutilizable para los dos grupos de botones (operación y recámaras)
+  // en vez de repetir la misma lógica dos veces.
+  function setupChips(containerId, onSelect){
+    const chips = document.querySelectorAll(`#${containerId} .filter-chip`);
+    chips.forEach(chip => chip.addEventListener('click', () => {
+      chips.forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      onSelect(chip.dataset);
+    }));
+  }
+
+  setupChips('opChips', d => { state.op = d.op; render(); });
+  setupChips('recChips', d => { state.recMin = parseInt(d.rec, 10); render(); });
+
+  document.querySelectorAll(`#opChips .filter-chip[data-op="${state.op}"]`).forEach(c => {
+    document.querySelectorAll('#opChips .filter-chip').forEach(x => x.classList.remove('active'));
+    c.classList.add('active');
+  });
+
+  document.getElementById('fCiudad').addEventListener('input', e => { state.ciudad = e.target.value; render(); });
+  document.getElementById('fTipo').addEventListener('change', e => { state.tipo = e.target.value; render(); });
+  document.getElementById('fPrecio').addEventListener('input', e => { state.precioMax = e.target.value ? parseInt(e.target.value, 10) : null; render(); });
+  document.getElementById('orden').addEventListener('change', e => { state.orden = e.target.value; render(); });
+
+  document.getElementById('clearFilters').addEventListener('click', () => {
+    state.op = 'todos'; state.ciudad = ''; state.tipo = 'todos'; state.recMin = 0; state.precioMax = null;
+    document.getElementById('fCiudad').value = '';
+    document.getElementById('fTipo').value = 'todos';
+    document.getElementById('fPrecio').value = '';
+    document.querySelectorAll('#opChips .filter-chip').forEach(c => c.classList.toggle('active', c.dataset.op === 'todos'));
+    document.querySelectorAll('#recChips .filter-chip').forEach(c => c.classList.toggle('active', c.dataset.rec === '0'));
+    render();
+  });
+
+  render();
+</script>
+
+</body>
+</html>
