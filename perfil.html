@@ -109,14 +109,17 @@
           <textarea id="propDesc" placeholder="Describe la propiedad..."></textarea>
         </div>
         <div class="field-light">
-          <label for="propFoto1">Fotos (enlaces de imagen — opcional, se usará una de ejemplo si lo dejas vacío)</label>
-          <p style="font-size:0.8rem;color:var(--ink-soft);margin:-2px 0 10px;">Importante: pega el enlace directo a la imagen (termina en .jpg, .png, etc., o es el link de "Abrir imagen en una pestaña nueva"), no el link de una página que solo la muestra.</p>
-          <input id="propFoto1" type="url" placeholder="https://... (foto principal)" style="margin-bottom:6px;">
-          <img id="previewFoto1" style="display:none;width:100%;max-height:160px;object-fit:cover;border:1px solid var(--line);margin-bottom:10px;">
-          <input id="propFoto2" type="url" placeholder="https://... (foto 2)" style="margin-bottom:6px;">
-          <img id="previewFoto2" style="display:none;width:100%;max-height:160px;object-fit:cover;border:1px solid var(--line);margin-bottom:10px;">
-          <input id="propFoto3" type="url" placeholder="https://... (foto 3)" style="margin-bottom:6px;">
-          <img id="previewFoto3" style="display:none;width:100%;max-height:160px;object-fit:cover;border:1px solid var(--line);">
+          <label>Fotos de tu propiedad (sube desde tu computadora o celular)</label>
+          <p style="font-size:0.8rem;color:var(--ink-soft);margin:-2px 0 10px;">La primera foto que subas será la principal. Si no subes ninguna, se mostrará una imagen genérica.</p>
+          <label for="propFoto1" style="font-size:0.82rem;font-weight:600;display:block;margin-bottom:4px;">Foto principal</label>
+          <input id="propFoto1" type="file" accept="image/*" style="margin-bottom:6px;">
+          <img id="previewFoto1" style="display:none;width:100%;max-height:160px;object-fit:cover;border-radius:8px;border:1px solid var(--line);margin-bottom:14px;">
+          <label for="propFoto2" style="font-size:0.82rem;font-weight:600;display:block;margin-bottom:4px;">Foto 2 (opcional)</label>
+          <input id="propFoto2" type="file" accept="image/*" style="margin-bottom:6px;">
+          <img id="previewFoto2" style="display:none;width:100%;max-height:160px;object-fit:cover;border-radius:8px;border:1px solid var(--line);margin-bottom:14px;">
+          <label for="propFoto3" style="font-size:0.82rem;font-weight:600;display:block;margin-bottom:4px;">Foto 3 (opcional)</label>
+          <input id="propFoto3" type="file" accept="image/*">
+          <img id="previewFoto3" style="display:none;width:100%;max-height:160px;object-fit:cover;border-radius:8px;border:1px solid var(--line);margin-top:6px;">
         </div>
         <div class="account-msg" id="propMsg"></div>
         <div style="display:flex;gap:12px;">
@@ -198,22 +201,26 @@
       msg.className = 'account-msg ok';
     });
 
-    /* ===== Vista previa de fotos: para detectar de una vez si el
-       enlace pegado sí es una imagen directa, antes de publicar. ===== */
-    function setupFotoPreview(inputId, imgId){
+    /* ===== Fotos subidas: las convertimos a base64 para guardarlas
+       en localStorage junto con la propiedad (no dependen de un link externo). ===== */
+    function setupFotoUpload(inputId, imgId){
       const input = document.getElementById(inputId);
       const img = document.getElementById(imgId);
-      input.addEventListener('input', () => {
-        const url = input.value.trim();
-        if(!url){ img.style.display = 'none'; input.style.borderColor = ''; return; }
-        img.onload = () => { img.style.display = 'block'; input.style.borderColor = 'var(--forest)'; };
-        img.onerror = () => { img.style.display = 'none'; input.style.borderColor = 'var(--terracotta)'; };
-        img.src = url;
+      input.addEventListener('change', () => {
+        const archivo = input.files && input.files[0];
+        if(!archivo){ return; }
+        const lector = new FileReader();
+        lector.onload = () => {
+          input.dataset.dataurl = lector.result;
+          img.src = lector.result;
+          img.style.display = 'block';
+        };
+        lector.readAsDataURL(archivo);
       });
     }
-    setupFotoPreview('propFoto1', 'previewFoto1');
-    setupFotoPreview('propFoto2', 'previewFoto2');
-    setupFotoPreview('propFoto3', 'previewFoto3');
+    setupFotoUpload('propFoto1', 'previewFoto1');
+    setupFotoUpload('propFoto2', 'previewFoto2');
+    setupFotoUpload('propFoto3', 'previewFoto3');
 
     /* ===== Mis propiedades ===== */
     const propForm = document.getElementById('propForm');
@@ -232,9 +239,12 @@
       document.getElementById('propM2').value = '';
       document.getElementById('propDesc').value = '';
       ['propFoto1','propFoto2','propFoto3'].forEach((id, i) => {
-        document.getElementById(id).value = '';
-        document.getElementById(id).style.borderColor = '';
-        document.getElementById('previewFoto' + (i + 1)).style.display = 'none';
+        const input = document.getElementById(id);
+        input.value = '';
+        delete input.dataset.dataurl;
+        const preview = document.getElementById('previewFoto' + (i + 1));
+        preview.style.display = 'none';
+        preview.src = '';
       });
       document.getElementById('propMsg').textContent = '';
       document.getElementById('propSubmitBtn').textContent = 'Publicar propiedad';
@@ -265,7 +275,7 @@
             <div class="listing-specs"><span>${p.recamaras} recámaras</span><span>${p.banos} baños</span><span>${p.m2} m²</span></div>
           </div>
           <div class="manage-actions">
-            <a href="detalle.html?id=${p.id}">Ver</a>
+            <a href="detalles.html?id=${p.id}">Ver</a>
             <button data-edit="${p.id}">Editar</button>
             <button data-del="${p.id}" class="danger">Eliminar</button>
           </div>
@@ -288,8 +298,15 @@
         document.getElementById('propDesc').value = p.desc;
         ['propFoto1','propFoto2','propFoto3'].forEach((id, i) => {
           const input = document.getElementById(id);
-          input.value = (p.fotos && p.fotos[i]) || '';
-          input.dispatchEvent(new Event('input'));
+          const preview = document.getElementById('previewFoto' + (i + 1));
+          const fotoGuardada = (p.fotos && p.fotos[i]) || '';
+          input.dataset.dataurl = fotoGuardada;
+          if(fotoGuardada){
+            preview.src = fotoGuardada;
+            preview.style.display = 'block';
+          } else {
+            preview.style.display = 'none';
+          }
         });
         document.getElementById('propSubmitBtn').textContent = 'Guardar cambios';
         propForm.style.display = 'block';
@@ -318,9 +335,9 @@
       }
 
       const fotos = [
-        document.getElementById('propFoto1').value.trim(),
-        document.getElementById('propFoto2').value.trim(),
-        document.getElementById('propFoto3').value.trim()
+        document.getElementById('propFoto1').dataset.dataurl || '',
+        document.getElementById('propFoto2').dataset.dataurl || '',
+        document.getElementById('propFoto3').dataset.dataurl || ''
       ].filter(Boolean);
 
       const datos = {
@@ -365,7 +382,7 @@
 
       favEmpty.style.display = favs.length ? 'none' : 'block';
       favoritosGrid.innerHTML = favs.map(p => `
-        <div class="listing-card" style="cursor:pointer;" onclick="window.location.href='detalle.html?id=${p.id}'">
+        <div class="listing-card" style="cursor:pointer;" onclick="window.location.href='detalles.html?id=${p.id}'">
           <div class="listing-img">
             <span class="listing-tag">${p.op === 'rentar' ? 'En renta' : 'En venta'}</span>
             <img src="${(p.fotos && p.fotos[0]) || ('https://picsum.photos/seed/raiz-prop' + p.id + '/500/375')}" alt="${p.tipo} en ${p.colonia}, ${p.ciudad}" loading="lazy" onerror="this.onerror=null;this.src='https://picsum.photos/seed/raiz-prop${p.id}/500/375';">

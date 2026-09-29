@@ -39,7 +39,7 @@ async function iniciarMapaConPropiedades() {
     const cache = obtenerCacheCoordenadas(); 
     
 const iconoHogarys = L.icon({
-    iconUrl: 'casita.png',
+    iconUrl: 'video_imagenes/casita.png',
     iconSize: [50, 40],      
     iconAnchor: [15, 40],    
     popupAnchor: [0, -42]    
@@ -86,10 +86,19 @@ const iconoHogarys = L.icon({
             
             const marcador = L.marker([latVariada, lngVariada], { icon: iconoHogarys }).addTo(miMapa);
 
+            const fotoPopup = (propiedad.fotos && propiedad.fotos.length > 0) ? propiedad.fotos[0] : 'video_imagenes/casita.png';
+
             const popupContenido = `
-                <div style="font-family: 'Inter', sans-serif; text-align: center;">
-                    <strong>${propiedad.tipo} en ${propiedad.colonia}</strong><br>
+                <div style="font-family: 'Inter', sans-serif; width: 200px;">
+                    <img src="${fotoPopup}" alt="${propiedad.tipo}" style="width:100%; height:110px; object-fit:cover; border-radius:8px; margin-bottom:8px;">
+                    <strong style="display:block; font-size:0.95rem;">${propiedad.tipo} en ${propiedad.colonia}</strong>
                     <span style="color: var(--terracotta); font-weight: bold;">${precioFormateado}</span>
+                    <div style="display:flex; gap:8px; font-size:0.75rem; color:var(--ink-soft); margin:6px 0;">
+                        <span>${propiedad.recamaras} rec.</span>
+                        <span>${propiedad.banos} baños</span>
+                        <span>${propiedad.m2} m²</span>
+                    </div>
+                    <a href="detalles.html?id=${propiedad.id}" style="display:block; text-align:center; margin-top:6px; padding:8px; background:var(--terracotta); color:#fff; border-radius:8px; text-decoration:none; font-weight:600; font-size:0.85rem;">Ver detalles completos</a>
                 </div>
             `;
             marcador.bindPopup(popupContenido);
@@ -100,7 +109,7 @@ const iconoHogarys = L.icon({
             tarjeta.className = 'sidebar-card';
             
             
-            const fotoTarjeta = (propiedad.fotos && propiedad.fotos.length > 0) ? propiedad.fotos[0] : 'casita.png';
+            const fotoTarjeta = (propiedad.fotos && propiedad.fotos.length > 0) ? propiedad.fotos[0] : 'video_imagenes/casita.png';
 
 tarjeta.innerHTML = `
                 <div class="card-header">

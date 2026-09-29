@@ -14,8 +14,8 @@ const SITE_HEADER = `
         <li><a href="listado.html?op=comprar">Comprar</a></li>
         <li><a href="listado.html?op=rentar">Rentar</a></li>
         <li><a href="perfil.html">Vender</a></li>
-        <li><a id="como-funciona" href="index.html#como-funciona">Cómo funciona</a></li>
-        <li><a href="contactos.html">Contacto</a></li>
+        <li><a id="nav-como-funciona" href="index.html#como-funciona">Cómo funciona</a></li>
+        <li><a href="contactos.html">STAFF</a></li>
       </ul>
     </nav>
     <div class="nav-actions" id="navActions">
@@ -112,7 +112,7 @@ function alternarSecciones() {
   const secVisitante = document.getElementById('seccionVisitante');
   const secUsuario = document.getElementById('seccionSesionIniciada');
   const secBand = document.getElementById('seccionBand');
-  const secTuto = document.getElementById('como-funciona');
+  const secTuto = document.getElementById('nav-como-funciona');
   
   if (!secVisitante || !secUsuario) return;
 
@@ -283,6 +283,15 @@ function hogarysInit(){
 
   document.querySelectorAll('[data-switch="login"]').forEach(b => b.addEventListener('click', () => { close(registerModal); open(loginModal); }));
   document.querySelectorAll('[data-switch="register"]').forEach(b => b.addEventListener('click', () => { close(loginModal); open(registerModal); }));
+
+  document.querySelectorAll('a[href="perfil.html"]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      if(!getSesion()){
+        e.preventDefault();
+        open(loginModal);
+      }
+    });
+  });
 
   document.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', () => { close(registerModal); close(loginModal); }));
   [registerModal, loginModal].forEach(m => m.addEventListener('click', (e) => { if(e.target === m) close(m); }));

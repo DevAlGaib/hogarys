@@ -15,12 +15,11 @@ const PROPERTIES = [
     amenidades: ['Cochera para 2 autos', 'Cocina integral', 'Seguridad 24h', 'Área de lavado'],
     agente: 'Mariana Niebla',
     fotos : [
-      "imagenes/imagenes/propiedades/1/1.png",
-      "imagenes/imagenes/propiedades/1/2.png",
-      "imagenes/imagenes/propiedades/1/3.png",
-      "imagenes/imagenes/propiedades/1/4.png"
+      "video_imagenes/1/1.png",
+      "video_imagenes/1/2.png",
+      "video_imagenes/1/3.png",
+      "video_imagenes/1/4.png",
     ]
-
   },
   {
     id: 2,
@@ -37,10 +36,10 @@ const PROPERTIES = [
     amenidades: ['Amueblado', 'Área común', 'Estacionamiento', 'Incluye agua', 'Cerca de transporte público'],
     agente: 'Jorge Almada',
     fotos : [
-      "imagenes/imagenes/propiedades/2/1.png",
-      "imagenes/imagenes/propiedades/2/2.png",
-      "imagenes/imagenes/propiedades/2/3.png",
-      "imagenes/imagenes/propiedades/2/4.png"
+      "video_imagenes/2/1.png",
+      "video_imagenes/2/2.png",
+      "video_imagenes/2/3.png",
+      "video_imagenes/2/4.png"
     ]
   },
   {
@@ -58,10 +57,10 @@ const PROPERTIES = [
     amenidades: ['Alberca', 'Jardín amplio', 'Estudio independiente', 'Fraccionamiento privado', 'Cochera techada', 'Cuarto de servicio'],
     agente: 'Marisol Téllez',
     fotos : [
-      "imagenes/imagenes/propiedades/3/1.png",
-      "imagenes/imagenes/propiedades/3/2.png",
-      "imagenes/imagenes/propiedades/3/3.png",
-      "imagenes/imagenes/propiedades/3/4.png"
+      "video_imagenes/3/1.png",
+      "video_imagenes/3/2.png",
+      "video_imagenes/3/3.png",
+      "video_imagenes/3/4.png"
     ]
   },
   {
@@ -79,10 +78,10 @@ const PROPERTIES = [
     amenidades: ['Patio amplio', 'Cocina remodelada', 'Cerca de escuelas', 'Cochera', 'Mascotas permitidas'],
     agente: 'Luis Peraza',
     fotos : [
-      "imagenes/imagenes/propiedades/4/1.png",
-      "imagenes/imagenes/propiedades/4/2.png",
-      "imagenes/imagenes/propiedades/4/3.png",
-      "imagenes/imagenes/propiedades/4/4.png"
+      "video_imagenes/4/1.png",
+      "video_imagenes/4/2.png",
+      "video_imagenes/4/3.png",
+      "video_imagenes/4/4.png"
     ]
   },
   {
@@ -100,10 +99,10 @@ const PROPERTIES = [
     amenidades: ['Club de residentes', 'Alberca común', 'Caseta de vigilancia', 'Áreas verdes', 'Cochera techada', 'Cuarto de lavado'],
     agente: 'Marisol Téllez',
     fotos : [
-      "imagenes/imagenes/propiedades/5/1.png",
-      "imagenes/imagenes/propiedades/5/2.png",
-      "imagenes/imagenes/propiedades/5/3.png",
-      "imagenes/imagenes/propiedades/5/4.png"
+      "video_imagenes/5/1.png",
+      "video_imagenes/5/2.png",
+      "video_imagenes/5/3.png",
+      "video_imagenes/5/4.png"
     ]
   },
   {
@@ -121,10 +120,10 @@ const PROPERTIES = [
     amenidades: ['Zona céntrica', 'Amueblado', 'Wifi incluido', 'Seguridad', 'Cerca de universidades', 'Área de lavandería'],
     agente: 'Jorge Almada',
     fotos : [
-      "imagenes/imagenes/propiedades/6/1.png",
-      "imagenes/imagenes/propiedades/6/2.png",
-      "imagenes/imagenes/propiedades/6/3.png",
-      "imagenes/imagenes/propiedades/6/4.png"
+      "video_imagenes/6/1.png",
+      "video_imagenes/6/2.png",
+      "video_imagenes/6/3.png",
+      "video_imagenes/6/4.png"
     ]
   },
   {
@@ -142,10 +141,10 @@ const PROPERTIES = [
     amenidades: ['Doble altura en sala', 'Cocina con isla', 'Cuarto de TV', 'Cochera para 3 autos', 'Jardín trasero', 'Cisterna y planta de luz'],
     agente: 'Ana Beltrán',
     fotos : [
-      "imagenes/imagenes/propiedades/7/1.png",
-      "imagenes/imagenes/propiedades/7/2.png",
-      "imagenes/imagenes/propiedades/7/3.png",
-      "imagenes/imagenes/propiedades/7/4.png"
+      "video_imagenes/7/1.png",
+      "video_imagenes/7/2.png",
+      "video_imagenes/7/3.png",
+      "video_imagenes/7/4.png"
     ]
   },
   {
@@ -163,10 +162,10 @@ const PROPERTIES = [
     amenidades: ['Vigilancia 24h', 'Cerca de plazas comerciales', 'Balcón', 'Estacionamiento techado', 'Área de asadores', 'Gimnasio del edificio'],
     agente: 'Luis Peraza',
     fotos : [
-      "imagenes/imagenes/propiedades/8/1.png",
-      "imagenes/imagenes/propiedades/8/2.png",
-      "imagenes/imagenes/propiedades/8/3.png",
-      "imagenes/imagenes/propiedades/8/4.png"
+      "video_imagenes/8/1.png",
+      "video_imagenes/8/2.png",
+      "video_imagenes/8/3.png",
+      "video_imagenes/8/4.png"
     ]
   },
   {
@@ -184,10 +183,10 @@ const PROPERTIES = [
     amenidades: ['Club de residentes', 'Alberca común', 'Caseta de vigilancia', 'Áreas verdes', 'Cochera techada', 'Cuarto de lavado'],
     agente: 'Marisol Téllez',
     fotos : [
-      "imagenes/imagenes/propiedades/9/1.png",
-      "imagenes/imagenes/propiedades/9/2.png",
-      "imagenes/imagenes/propiedades/9/3.png",
-      "imagenes/imagenes/propiedades/9/4.png"
+      "video_imagenes/9/1.png",
+      "video_imagenes/9/2.png",
+      "video_imagenes/9/3.png",
+      "video_imagenes/9/4.png"
     ]
   },
   {
@@ -205,10 +204,10 @@ const PROPERTIES = [
     amenidades: ['Cerca de escuelas', 'Cochera cubierta', 'Patio de servicio', 'Cocina equipada', 'Portón eléctrico', 'Zona bien comunicada'],
     agente: 'Jorge Almada',
     fotos : [
-      "imagenes/imagenes/propiedades/10/1.png",
-      "imagenes/imagenes/propiedades/10/2.png",
-      "imagenes/imagenes/propiedades/10/3.png",
-      "imagenes/imagenes/propiedades/10/4.png"
+      "video_imagenes/10/1.png",
+      "video_imagenes/10/2.png",
+      "video_imagenes/10/3.png",
+      "video_imagenes/10/4.png"
     ]
   },
 ];
